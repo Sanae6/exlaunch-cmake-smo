@@ -33,3 +33,7 @@ build/
 *.exe
 *.out
 *.app
+cmake-build*/
+.idea/
+libs/*
+!libs/README.md

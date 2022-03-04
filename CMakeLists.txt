@@ -4,29 +4,39 @@ project(subsdk)
 ## Error if not using switch toolchain file
 if (NOT SWITCH)
   message(FATAL_ERROR "Not targeting switch, make sure to specify -DCMAKE_TOOLCHAIN_FILE=cmake/toolchain.cmake")
-endif()
+endif ()
 
 set(CMAKE_C_STANDARD 17)
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 enable_language(ASM C CXX)
 
+if (LOGGER_IP)
+  add_compile_definitions(LOGGER_IP="${LOGGER_IP}")
+endif ()
+
 ## Title Id
-set(CONFIG_TITLE_ID 0x0100801011c3e000)
-add_compile_definitions(EXL_PROGRAM_ID=${CONFIG_TITLE_ID} EXL_LOAD_KIND=Module EXL_LOAD_KIND_ENUM=2)
+set(TITLE_ID 0100000000010000)
+set(CONFIG_TITLE_ID 0x${TITLE_ID})
+add_compile_definitions(EXL_PROGRAM_ID=${CONFIG_TITLE_ID})
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/module/subsdk9.json.template ${CMAKE_CURRENT_BINARY_DIR}/subsdk9.json)
 
 ## Project sources
 include_directories(${PROJECT_SOURCE_DIR}/src/)
 file(GLOB_RECURSE SOURCES_ASM ${PROJECT_SOURCE_DIR}/src/*.s)
 file(GLOB_RECURSE SOURCES_C ${PROJECT_SOURCE_DIR}/src/*.c)
+file(GLOB_RECURSE SOURCES_H ${PROJECT_SOURCE_DIR}/src/*.h ${PROJECT_SOURCE_DIR}/src/*.hpp)
 file(GLOB_RECURSE SOURCES_CXX ${PROJECT_SOURCE_DIR}/src/*.cpp)
+file(GLOB_RECURSE LOCAL_LIBRARIES ${PROJECT_SOURCE_DIR}/libs/*.a)
 
 ## Include nx tools
 include(${CMAKE_SOURCE_DIR}/cmake/SwitchTools.cmake)
 
 ## subsdk9
 set(CMAKE_EXECUTABLE_SUFFIX ".elf")
-add_executable(subsdk9 ${SOURCES_ASM} ${SOURCES_C} ${SOURCES_CXX})
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+add_executable(subsdk9 ${SOURCES_ASM} ${SOURCES_C} ${SOURCES_H} ${SOURCES_CXX})
+add_compile_definitions(EXL_LOAD_KIND=Module EXL_LOAD_KIND_ENUM=EXL_LOAD_KIND_MODULE)
+target_link_libraries(subsdk9 ${LOCAL_LIBRARIES})
 
 ## Prepare subsdk ld
 set(SUBSDK_LD_PATH ${CMAKE_CURRENT_SOURCE_DIR}/module/subsdk9.ld)
@@ -40,4 +50,10 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/module/subsdk9.specs.template ${CMAKE
 add_nso_target_subsdk(subsdk9)
 set_target_properties(subsdk9 PROPERTIES CONFIG_JSON "${CMAKE_CURRENT_BINARY_DIR}/subsdk9.json")
 __generate_npdm(subsdk9)
-set_target_properties(subsdk9 PROPERTIES LINK_FLAGS "-specs ${CMAKE_BINARY_DIR}/subsdk9.specs -g ${ARCH} -nostartfiles -nostdlib")
+set_target_properties(subsdk9 PROPERTIES LINK_FLAGS "-specs ${CMAKE_BINARY_DIR}/subsdk9.specs -g3 ${ARCH} -nostartfiles")
+
+add_custom_target(subsdk9_meta DEPENDS create_npdm subsdk9_nso)
+if (FTP_IP)
+  ## Upload to target switch
+  add_custom_command(TARGET subsdk9_meta POST_BUILD COMMAND ncftpput -P 5000 ${FTP_IP} /atmosphere/contents/${TITLE_ID}/exefs ${CMAKE_BINARY_DIR}/main.npdm ${CMAKE_BINARY_DIR}/subsdk9)
+endif ()

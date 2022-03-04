@@ -237,7 +237,7 @@ function(__generate_npdm target)
 
     # Build the NPDM file.
     add_custom_target(create_npdm ALL
-            COMMAND ${npdmtool} ${__HOMEBREW_JSON_CONFIG} ${CMAKE_CURRENT_BINARY_DIR}/${target_we}.npdm
+            COMMAND ${npdmtool} ${__HOMEBREW_JSON_CONFIG} ${CMAKE_CURRENT_BINARY_DIR}/main.npdm
             DEPENDS ${target} ${__HOMEBREW_JSON_CONFIG}
             VERBATIM
     )

@@ -1,10 +1,6 @@
-# exlaunch-cmake
+# exlaunch-cmake for Exlaunch.NET
 
-A fork of exlaunch with focus on subsdk output for game modding.
-
-# Notes
-
-Currently untested
+A fork of exlaunch-cmake modified to be a runtime for [Exlaunch.NET](https://github.com/Sanae6/Exlaunch.NET).
 
 # Credits
 

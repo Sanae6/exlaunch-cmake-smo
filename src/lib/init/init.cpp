@@ -68,6 +68,8 @@ void exl_module_fini(void) {}
 #include <lib/util/mem_layout.hpp>
 #include <lib/util/soc.hpp>
 
+extern void exl_setup();
+
 extern "C" void exl_init() {
 /* Getting the SOC type in an application context is more effort than it's worth. */
 #ifndef EXL_AS_MODULE
@@ -76,4 +78,10 @@ extern "C" void exl_init() {
     exl::util::impl::InitMemLayout();
     virtmemSetup();
     exl::patch::impl::InitPatcherImpl();
+    exl_setup();
+}
+
+extern "C" NORETURN void exl_exception_entry() {
+    /* TODO: exception handling */
+    EXL_ABORT(0x420);
 }

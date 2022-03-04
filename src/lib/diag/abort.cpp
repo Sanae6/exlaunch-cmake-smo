@@ -23,25 +23,8 @@
 namespace exl::diag {
 
     void NORETURN NOINLINE AbortImpl(const AbortCtx& ctx) {
-#ifdef EXL_SUPPORTS_REBOOTPAYLOAD
-        /* Ensure abort handler doesn't recursively abort. */
-        static std::atomic<bool> recurse_guard;
-        auto recursing = recurse_guard.exchange(true);
-
-        if (!recursing && util::IsSocErista()) {
-            /* Reboot to abort payload.*/
-            AbortToPayload(ctx);
-        } else
-#endif
         {
-            /* We have no capability of chainloading payloads on mariko. */
-            /* Don't have a great solution for this at the moment, just data abort. */
-            /* TODO: maybe write to a file? custom fatal program? */
-            register u64 addr __asm__("x27") = 0x6969696969696969;
-            register u64 val __asm__("x28") = ctx.m_Result;
-            while (true) {
-                __asm__ __volatile__("str %[val], [%[addr]]" : : [val] "r"(val), [addr] "r"(addr));
-            }
+            svcBreak(ctx.m_Result, 0, 0);
         }
 
         UNREACHABLE;

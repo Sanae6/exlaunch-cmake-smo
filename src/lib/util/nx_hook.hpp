@@ -43,7 +43,6 @@ namespace exl::util {
       private:
         static Jit s_HookJit;
 
-        static uintptr_t HookFuncCommon(uintptr_t hook, uintptr_t callback, bool do_trampoline = false);
         static Result AllocForTrampoline(uint32_t** rx, uint32_t** rw);
 
       public:
@@ -59,6 +58,7 @@ namespace exl::util {
         using InlineCallback = void (*)(InlineCtx*);
 
         static void Initialize();
+        static uintptr_t HookFuncCommon(uintptr_t hook, uintptr_t callback, bool do_trampoline = false);
 
         template <typename Func>
         requires RealFunction<Func> || std::is_member_function_pointer_v<Func>
