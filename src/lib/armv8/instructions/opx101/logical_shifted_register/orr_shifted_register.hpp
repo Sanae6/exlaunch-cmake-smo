@@ -5,13 +5,13 @@
 namespace exl::armv8::inst {
 
     struct OrrShiftedRegister : public impl::opx101::LogicalShiftedRegister {
-
+        
         static constexpr u8 Sf = 0b1;
         static constexpr u8 Opc = 0b01;
 
         ACCESSOR(Shift, 22, 24);
-        ACCESSOR(Rm, 16, 21);
-        ACCESSOR(Imm6, 10, 16);
+        ACCESSOR(Rm,    16, 21);
+        ACCESSOR(Imm6,  10, 16);
 
         enum ShiftType : u8 {
             LSL = 0b00,
@@ -26,7 +26,7 @@ namespace exl::armv8::inst {
         }
 
         constexpr OrrShiftedRegister(reg::Register rd, reg::Register rn, reg::Register rm, ShiftType shift, u16 amount)
-            : LogicalShiftedRegister(GetSf(rd, rn, rm), Opc) {
+        : LogicalShiftedRegister(GetSf(rd, rn, rm), Opc) {
             SetShift(shift);
             SetN(0);
             SetRm(rm.Index());
@@ -34,11 +34,12 @@ namespace exl::armv8::inst {
             SetRn(rn.Index());
             SetRd(rd.Index());
         }
+
     };
 
-} // namespace exl::armv8::inst
+}
 
-#include "asr.hpp"
 #include "lsl.hpp"
 #include "lsr.hpp"
+#include "asr.hpp"
 #include "ror.hpp"

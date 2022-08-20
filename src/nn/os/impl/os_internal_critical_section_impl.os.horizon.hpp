@@ -23,33 +23,30 @@ namespace nn::os::detail {
     class InternalConditionVariableImplByHorizon;
 
     class InternalCriticalSectionImplByHorizon {
-      private:
-        friend class InternalConditionVariableImplByHorizon;
+        private:
 
-      private:
-        u32 m_thread_handle;
+            friend class InternalConditionVariableImplByHorizon;
+        private:
+            u32 m_thread_handle;
+        public:
+            constexpr InternalCriticalSectionImplByHorizon() : m_thread_handle(INVALID_HANDLE) { /* ... */ }
 
-      public:
-        constexpr InternalCriticalSectionImplByHorizon() : m_thread_handle(INVALID_HANDLE) { /* ... */
-        }
+            constexpr void Initialize() { m_thread_handle = INVALID_HANDLE; }
+            constexpr void Finalize() { /* ... */ }
 
-        constexpr void Initialize() { m_thread_handle = INVALID_HANDLE; }
-        constexpr void Finalize() { /* ... */
-        }
+            void Enter();
+            bool TryEnter();
+            void Leave();
 
-        void Enter();
-        bool TryEnter();
-        void Leave();
+            bool IsLockedByCurrentThread() const;
 
-        bool IsLockedByCurrentThread() const;
+            ALWAYS_INLINE void Lock()    { return this->Enter(); }
+            ALWAYS_INLINE bool TryLock() { return this->TryEnter(); }
+            ALWAYS_INLINE void Unlock()  { return this->Leave(); }
 
-        ALWAYS_INLINE void Lock() { return this->Enter(); }
-        ALWAYS_INLINE bool TryLock() { return this->TryEnter(); }
-        ALWAYS_INLINE void Unlock() { return this->Leave(); }
-
-        ALWAYS_INLINE void lock() { return this->Lock(); }
-        ALWAYS_INLINE bool try_lock() { return this->TryLock(); }
-        ALWAYS_INLINE void unlock() { return this->Unlock(); }
+            ALWAYS_INLINE void lock()     { return this->Lock(); }
+            ALWAYS_INLINE bool try_lock() { return this->TryLock(); }
+            ALWAYS_INLINE void unlock()   { return this->Unlock(); }
     };
 
-} // namespace nn::os::detail
+}

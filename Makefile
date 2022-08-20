@@ -1,3 +1,4 @@
+# todo FTP_IP and LOGGER_IP flags
 
 .PHONY: all clean
 

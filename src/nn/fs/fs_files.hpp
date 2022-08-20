@@ -4,7 +4,7 @@
 
 namespace nn::fs {
 
-    /*
+    /* 
         Create a file.
         path: Path where to create the path.
         size: Size of the file to create.
@@ -51,6 +51,7 @@ namespace nn::fs {
     */
     Result ReadFile(ulong* bytesRead, FileHandle handle, long position, void* buffer);
 
+    
     /*
         Read file at a location, with an output amount of bytes read, and additional options.
         bytesRead:  How many bytes were actually read.
@@ -66,7 +67,7 @@ namespace nn::fs {
         size:   File size.
         handle: Handle representing file to check.
     */
-    Result GetFileSize(long* size, nn::fs::FileHandle handle);
+   Result GetFileSize(long* size, nn::fs::FileHandle handle);
 
     /*
         Writes to a file.
@@ -74,13 +75,13 @@ namespace nn::fs {
         position: Position within the file to write to.
         buffer: Pointer to the data to be written.
         size: Amount of data to write, from the pointer.
-        option: Additional options for writing, like flushing.
+        option: Additional options for writing, like flushing. 
     */
     Result WriteFile(FileHandle handle, s64 position, void const* buffer, u64 size, WriteOption const& option);
 
     /*
         Flush file.
-        handle: Handle representing file to flush.
+        handle: Handle representing file to flush. 
     */
-    Result FlushFile(FileHandle handle);
-} // namespace nn::fs
+   Result FlushFile(FileHandle handle);
+}

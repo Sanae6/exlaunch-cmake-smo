@@ -22,10 +22,12 @@ namespace nn::os::detail {
     using TargetTimeSpan = ::nn::TimeSpan;
 
     class TimeoutHelperImpl {
-      public:
-        static TargetTimeSpan ConvertToImplTime(Tick tick) { return detail::GetTickManager().ConvertToTimeSpan(tick); }
+        public:
+            static TargetTimeSpan ConvertToImplTime(Tick tick) {
+                return detail::GetTickManager().ConvertToTimeSpan(tick);
+            }
 
-        static void Sleep(TimeSpan tm);
+            static void Sleep(TimeSpan tm);
     };
 
-} // namespace nn::os::detail
+}

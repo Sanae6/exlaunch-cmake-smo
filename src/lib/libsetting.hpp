@@ -6,21 +6,23 @@
 #define EXL_LOAD_KIND_ASRTLD 1
 #define EXL_LOAD_KIND_MODULE 2
 
-namespace exl::setting {
+namespace exl {
+    namespace setting {
 
-    enum class LoadKind {
-        Kip,
-        AsRtld,
-        Module,
-    };
-    /* Ensure consistency with preprocessor constants. */
-    static_assert(EXL_LOAD_KIND_KIP == static_cast<int>(LoadKind::Kip), "");
-    static_assert(EXL_LOAD_KIND_ASRTLD == static_cast<int>(LoadKind::AsRtld), "");
-    static_assert(EXL_LOAD_KIND_MODULE == static_cast<int>(LoadKind::Module), "");
+        enum class LoadKind {
+            Kip,
+            AsRtld,
+            Module,
+        };
+        /* Ensure consistency with preprocessor constants. */
+        static_assert(EXL_LOAD_KIND_KIP == static_cast<int>(LoadKind::Kip), "");
+        static_assert(EXL_LOAD_KIND_ASRTLD == static_cast<int>(LoadKind::AsRtld), "");
+        static_assert(EXL_LOAD_KIND_MODULE == static_cast<int>(LoadKind::Module), "");
 
-    static constexpr LoadKind SelfLoadKind = LoadKind::EXL_LOAD_KIND;
-    static constexpr u64 ProgramId = EXL_PROGRAM_ID;
-}; // namespace exl::setting
+        static constexpr LoadKind SelfLoadKind = LoadKind::EXL_LOAD_KIND;
+        static constexpr u64 ProgramId = EXL_PROGRAM_ID;
+    } // namespace setting
+};    // namespace exl
 
 #ifndef EXL_LOAD_KIND_ENUM
 #error "EXL_LOAD_KIND_ENUM not defined!"

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <lib/util/mem_layout.hpp>
-#include <lib/util/rw_pages.hpp>
+#include <lib/util/sys/rw_pages.hpp>
+#include <lib/util/sys/mem_layout.hpp>
 #include <lib/util/typed_storage.hpp>
 #include <optional>
 
@@ -18,13 +18,13 @@ namespace exl::patch {
             auto size = mod.m_Rodata.GetEnd() - start;
             util::ConstructAt(s_Storage, start, size);
         }
-    }; // namespace impl
+    };
 
     class PatcherImpl {
-      protected:
+        protected:
         const util::RwPages& m_Pages;
 
-        template <typename T>
+        template<typename T>
         inline T& At(const uintptr_t offset) {
             /* Get address for the object. */
             uintptr_t start = RwFromAddr(offset);
@@ -33,7 +33,7 @@ namespace exl::patch {
             return *ptr;
         }
 
-      public:
+        public:
         inline PatcherImpl() : m_Pages(impl::GetRwPages()) {}
 
         inline uintptr_t AddrFromRo(uintptr_t ro) const { return ro - m_Pages.GetRo(); }
@@ -45,4 +45,4 @@ namespace exl::patch {
         inline ptrdiff_t AddrFromRoPointer(void* ptr) const { return AddrFromRo(reinterpret_cast<uintptr_t>(ptr)); }
         inline ptrdiff_t AddrFromRwPointer(void* ptr) const { return AddrFromRw(reinterpret_cast<uintptr_t>(ptr)); }
     };
-} // namespace exl::patch
+}

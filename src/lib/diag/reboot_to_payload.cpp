@@ -19,13 +19,16 @@
 
 #include "program/abort_payload.inc"
 
-#include <algorithm>
 #include <cstring>
+#include <algorithm>
 
-namespace exl::diag {
-    namespace {
+namespace exl::diag
+{
+    namespace
+    {
 
-        namespace ams {
+        namespace ams
+        {
             constexpr size_t FatalErrorMaxStacktrace = 0x20;
             constexpr size_t FatalErrorMaxStackdump = 0x100;
 
@@ -38,13 +41,16 @@ namespace exl::diag {
             constexpr size_t IramPayloadMaxSize = 0x2E000;
             constexpr uintptr_t FatalErrorBase = IramPayloadBase + IramPayloadMaxSize;
 
-            struct FatalErrorCtx {
+            struct FatalErrorCtx
+            {
                 u32 magic;
                 u32 error_desc;
                 u64 title_id;
-                union {
+                union
+                {
                     u64 gprs[32];
-                    struct {
+                    struct
+                    {
                         u64 _gprs[29];
                         u64 fp;
                         u64 lr;
@@ -64,7 +70,7 @@ namespace exl::diag {
                 u64 stack_trace[FatalErrorMaxStacktrace];
                 uint8_t stack_dump[FatalErrorMaxStackdump];
             };
-        }; // namespace ams
+        };
 
         alignas(PAGE_SIZE) u8 WorkPage[PAGE_SIZE];
         constexpr std::size_t AbortPayloadSize = sizeof(s_AbortPayload);
@@ -72,20 +78,24 @@ namespace exl::diag {
         /* Enure provided payload can fit in IRAM space. */
         static_assert(AbortPayloadSize <= ams::IramPayloadMaxSize);
 
-        void ClearIram() {
+        void ClearIram()
+        {
             std::memset(WorkPage, 0xCC, sizeof(WorkPage));
 
-            for (size_t ofs = 0; ofs < ams::IramSize; ofs += sizeof(WorkPage)) {
+            for (size_t ofs = 0; ofs < ams::IramSize; ofs += sizeof(WorkPage))
+            {
                 smcCopyToIram(ams::IramBase + ofs, WorkPage, sizeof(WorkPage));
             }
         }
 
-        void CopyAbortPayloadToIram() {
+        void CopyAbortPayloadToIram()
+        {
             /* Clear IRAM. */
             ClearIram();
 
             /* Copy payload in sizeof(WorkPage) increments. */
-            for (std::size_t ofs = 0; ofs < AbortPayloadSize; ofs += sizeof(WorkPage)) {
+            for (std::size_t ofs = 0; ofs < AbortPayloadSize; ofs += sizeof(WorkPage))
+            {
                 std::size_t copySize = std::min(AbortPayloadSize - ofs, sizeof(WorkPage));
 
                 std::memcpy(WorkPage, &s_AbortPayload[ofs], copySize);
@@ -94,13 +104,14 @@ namespace exl::diag {
                 smcCopyToIram(ams::IramPayloadBase + ofs, WorkPage, sizeof(WorkPage));
             }
         }
-    }; // namespace
+    };
 
-    void NORETURN AbortToPayload(const AbortCtx& ctx) {
+    void NORETURN AbortToPayload(const AbortCtx& ctx)
+    {
         /* Copy abort payload into IRAM. */
         CopyAbortPayloadToIram();
 
-        /* Populate AMS' fatal context. */
+       /* Populate AMS' fatal context. */
         ams::FatalErrorCtx error_ctx = {
             .magic = ams::RebootToFatalMagic,
             .error_desc = ctx.m_Result,
@@ -117,6 +128,6 @@ namespace exl::diag {
 
         UNREACHABLE;
     }
-}; // namespace exl::diag
+};
 
 #endif

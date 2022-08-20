@@ -8,11 +8,11 @@ namespace exl::armv8::inst::impl::op100x {
 
         static constexpr u8 Op0 = 0b101;
 
-        ACCESSOR(Sf, 31);
-        ACCESSOR(Opc, 29, 31);
-        ACCESSOR(Hw, 21, 23);
+        ACCESSOR(Sf,    31);
+        ACCESSOR(Opc,   29, 31);
+        ACCESSOR(Hw,    21, 23);
         ACCESSOR(Imm16, 5, 21);
-        ACCESSOR(Rd, 0, 5);
+        ACCESSOR(Rd,    0, 5);
 
         constexpr MoveWideImmediate(reg::Register reg, u8 opc, u8 hw, u16 imm) : Op100xInstruction(Op0) {
             SetSf(reg.Is64());
@@ -22,7 +22,7 @@ namespace exl::armv8::inst::impl::op100x {
             SetRd(reg.Index());
         }
     };
-}; // namespace exl::armv8::inst::impl::op100x
+};
 
 #include "movk.hpp"
 #include "movn.hpp"

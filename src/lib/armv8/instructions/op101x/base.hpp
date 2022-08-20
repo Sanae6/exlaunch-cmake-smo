@@ -10,9 +10,11 @@ namespace exl::armv8::inst::impl {
         ACCESSOR(Op1, 12, 26);
         ACCESSOR(Op2, 0, 5);
 
-        constexpr Op101xInstruction(u8 op0) : Instruction(0b1010) { SetOp0(op0); }
+        constexpr Op101xInstruction(u8 op0) : Instruction(0b1010) {
+            SetOp0(op0);
+        }
     };
-} // namespace exl::armv8::inst::impl
+}
 
 #include "hints/base.hpp"
 #include "unconditional_branch_immediate/base.hpp"

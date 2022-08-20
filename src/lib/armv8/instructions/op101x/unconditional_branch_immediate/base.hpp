@@ -8,7 +8,7 @@ namespace exl::armv8::inst::impl::op101x {
 
         static constexpr u8 Op0 = 0b000;
 
-        ACCESSOR(Op, 31);
+        ACCESSOR(Op,    31);
         ACCESSOR(Imm26, 0, 26);
 
         enum Op {
@@ -21,7 +21,7 @@ namespace exl::armv8::inst::impl::op101x {
             SetImm26(relative_address / 4);
         }
     };
-} // namespace exl::armv8::inst::impl::op101x
+}
 
 #include "b.hpp"
 #include "bl.hpp"

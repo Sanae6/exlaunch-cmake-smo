@@ -10,5 +10,6 @@ namespace exl::armv8::inst {
         static constexpr u8 Hw = 0b00;
 
         constexpr Movz(reg::Register reg, u16 imm) : MoveWideImmediate(reg, Opc, Hw, imm) {}
+
     };
-} // namespace exl::armv8::inst
+}

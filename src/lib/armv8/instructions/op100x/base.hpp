@@ -8,9 +8,11 @@ namespace exl::armv8::inst::impl {
 
         ACCESSOR(Op0, 23, 26);
 
-        constexpr Op100xInstruction(u8 op0) : Instruction(0b1000) { SetOp0(op0); }
+        constexpr Op100xInstruction(u8 op0) : Instruction(0b1000) {
+            SetOp0(op0);
+        }
     };
-} // namespace exl::armv8::inst::impl
+}
 
 #include "logical_immediate/base.hpp"
 #include "move_wide_immediate/base.hpp"

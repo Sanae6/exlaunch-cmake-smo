@@ -18,6 +18,6 @@ namespace exl::armv8::inst::impl {
             SetOp3(op3);
         }
     };
-} // namespace exl::armv8::inst::impl
+}
 
 #include "logical_shifted_register/base.hpp"

@@ -1,9 +1,12 @@
 #pragma once
 
-#include <limits.h>
-#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <limits.h>
+
+#ifndef __cplusplus
+#include <stdbool.h>
+#endif
 
 typedef uint8_t u8;       ///<   8-bit unsigned integer.
 typedef uint16_t u16;     ///<  16-bit unsigned integer.
@@ -29,18 +32,34 @@ typedef volatile s32 vs32;   ///<  32-bit volatile signed integer.
 typedef volatile s64 vs64;   ///<  64-bit volatile signed integer.
 typedef volatile s128 vs128; ///< 128-bit volatile signed integer.
 
-typedef unsigned char uchar;
-typedef unsigned short ushort;
-typedef unsigned int uint;
-typedef unsigned long ulong;
+typedef unsigned char   uchar;
+typedef	unsigned short	ushort;
+typedef	unsigned int	uint;	
+typedef	unsigned long	ulong;
 
-#define ALIGN_UP(x, a) ((((uintptr_t)x) + (((uintptr_t)a) - 1)) & ~(((uintptr_t)a) - 1))
+typedef float f32;
+typedef double f64;
+
+typedef unsigned int usize_t;
+
+typedef unsigned char undefined;
+typedef unsigned char undefined1;
+typedef unsigned short undefined2;
+typedef unsigned int undefined3;
+typedef unsigned int undefined4;
+typedef unsigned long undefined8;
+
+#define ALIGN_UP(x, a) ((((uintptr_t)(x)) + (((uintptr_t)(a))-1)) & ~(((uintptr_t)(a))-1))
 #define ALIGN_DOWN(x, a) ((uintptr_t)(x) & ~(((uintptr_t)(a)) - 1))
-#define ALIGNED(a) __attribute__((aligned(a)))
-#define ON_INIT __attribute__((constructor))
-#define NOINLINE __attribute__((noinline))
-#define NORETURN __attribute__((noreturn))
+#define ALIGNED(a)      __attribute__((aligned(a)))
+#define ON_INIT         __attribute__((constructor))
+#define NOINLINE        __attribute__((noinline))
+#define NORETURN        __attribute__((noreturn))
 #define UNREACHABLE __builtin_unreachable()
 #define PAGE_SIZE (0x1000)
 #define ALWAYS_INLINE inline __attribute__((always_inline))
 #define BITSIZEOF(x) (sizeof(x) * CHAR_BIT)
+
+#ifdef __cplusplus
+#include "nn.hpp"
+#endif

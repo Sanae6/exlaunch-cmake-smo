@@ -17,13 +17,13 @@ typedef enum {
 /// JIT buffer object.
 typedef struct {
     JitType type;
-    size_t size;
-    void* src_addr;
-    void* rx_addr;
-    void* rw_addr;
-    bool is_executable;
+    size_t  size;
+    void*   src_addr;
+    void*   rx_addr;
+    void*   rw_addr;
+    bool    is_executable;
     union {
-        Handle handle;
+        Handle              handle;
         VirtmemReservation* rv;
     };
 } Jit;
@@ -62,11 +62,15 @@ Result jitClose(Jit* j);
  * @param j JIT buffer.
  * @return Pointer to alias of the JIT buffer that can be written to.
  */
-NX_CONSTEXPR void* jitGetRwAddr(Jit* j) { return j->rw_addr; }
+NX_CONSTEXPR void* jitGetRwAddr(Jit* j) {
+    return j->rw_addr;
+}
 
 /**
  * @brief Gets the address of the executable memory alias of a JIT buffer.
  * @param j JIT buffer.
  * @return Pointer to alias of the JIT buffer that can be executed.
  */
-NX_CONSTEXPR void* jitGetRxAddr(Jit* j) { return j->rx_addr; }
+NX_CONSTEXPR void* jitGetRxAddr(Jit* j) {
+    return j->rx_addr;
+}
