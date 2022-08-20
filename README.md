@@ -1,9 +1,10 @@
-# exlaunch-cmake for Exlaunch.NET
+# exlaunch-cmake-smo
 
-A fork of exlaunch-cmake modified to be a runtime for [Exlaunch.NET](https://github.com/Sanae6/Exlaunch.NET).
+A fork of [exlaunch-cmake](https://github.com/EngineLessCC/exlaunch-cmake/) made for use with Super Mario Odyssey.
 
 # Credits
 
+- [exlaunch-cmake](https://github.com/EngineLessCC/exlaunch-cmake/)
 - [exlaunch](https://github.com/shadowninja108/exlaunch/)
 - [BDSP](https://github.com/Martmists-GH/BDSP)
 - [Sanae](https://github.com/Sanae6)
